@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import Balance from "./components/Balance";
+import ChartTable from "./components/ChartTable";
 function App() {
   return (
     <MainContainer>
       <GlobalStyles />
       <Balance />
+      <ChartTable />
     </MainContainer>
   );
 }

@@ -55,4 +55,13 @@ const BalanceWrapper = styled.div`
       }
     }
   }
+  img {
+    width: 72px;
+    height: 48px;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  img:hover {
+    transform: scale(1.1);
+  }
 `;

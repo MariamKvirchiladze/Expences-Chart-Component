@@ -1,16 +1,45 @@
-import Summary from "./Summary";
+import { useEffect, useState } from "react";
+import { chartDataTypes } from "../types";
+import axios from "axios";
 import styled from "styled-components";
+import Summary from "./Summary";
+import Chart from "./Chart";
 
 const ChartTable = (): JSX.Element => {
+  const [chartData, setChartData] = useState<chartDataTypes[]>([]);
+  useEffect(() => {
+    const request = async () => {
+      const response = await axios.get("/data.json");
+      const data = response.data;
+      setChartData(data);
+    };
+    request();
+  }, []);
+
+  const amounts: number[] = [];
+  for (let i = 0; i < chartData.length; i++) {
+    amounts.push(chartData[i]?.amount);
+  }
+
+  const biggest = Math.max(...amounts);
+
   return (
     <ChartWrapper>
       <div className="titleAndChart">
         <div className="title">
           <h3>Spending - Last 7 days</h3>
         </div>
-        <div className="chart">
-          later I will add chart from Chart component here
-        </div>
+        <ChartDiv>
+          {chartData.map((data, amount) => (
+            <Chart
+              data={data}
+              chartData={chartData}
+              biggest={biggest}
+              amount={amount}
+              key={amount}
+            />
+          ))}
+        </ChartDiv>
       </div>
       <div className="divider"></div>
       <Summary />
@@ -32,6 +61,7 @@ const ChartWrapper = styled.div`
     padding: 32px 40px 41px;
     gap: 32px;
   }
+
   h2 {
     font-size: 24px;
     line-height: 31.25x;
@@ -59,5 +89,13 @@ const ChartWrapper = styled.div`
   .divider {
     border: 1px solid #f8e9dd;
     width: 100%;
+  }
+`;
+const ChartDiv = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  @media (min-width: 1024px) {
+    gap: 17.91px;
   }
 `;
